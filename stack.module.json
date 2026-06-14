@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "alloy",
+  "repo": "alloy-stack-module",
+  "runtimeId": "alloy",
+  "lifecycle": "active",
+  "dependencies": [
+    "prometheus",
+    "stack-foundation"
+  ],
+  "overlays": [
+    "stack.compose/alloy.yml",
+    "stack.config/alloy"
+  ]
+}
