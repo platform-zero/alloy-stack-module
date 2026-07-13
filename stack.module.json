@@ -11,8 +11,7 @@
   "runtimeDependencies": [
     "prometheus",
     "stack-foundation",
-    "loki",
-    "docker-proxy"
+    "loki"
   ],
   "contracts": [
     "module-contract"
@@ -21,7 +20,8 @@
   "smokeUnsupportedReason": "requires generated bundle context, deployed networking, secrets, or service dependencies",
   "overlays": [
     "stack.compose/alloy.yml",
-    "stack.config/alloy"
+    "stack.config/alloy",
+    "stack.runtime.yaml"
   ],
   "testAssets": []
 }

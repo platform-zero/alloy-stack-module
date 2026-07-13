@@ -5,16 +5,11 @@ services:
     restart: unless-stopped
     networks:
       - monitoring
-      - docker-proxy
     depends_on:
       loki:
         condition: service_started
     volumes:
       - ./configs/alloy/alloy.hcl:/etc/alloy/alloy.hcl:ro
-    environment:
-      ALLOY_DOCKER_HOST: tcp://docker-socket-proxy:2375
-      ALLOY_LOG_INCLUDE: .*
-      ALLOY_LOG_EXCLUDE: ^$
     command:
       - run
       - /etc/alloy/alloy.hcl
