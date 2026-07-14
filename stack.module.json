@@ -19,7 +19,6 @@
   "smoke": "external-only",
   "smokeUnsupportedReason": "requires generated bundle context, deployed networking, secrets, or service dependencies",
   "overlays": [
-    "stack.compose/alloy.yml",
     "stack.config/alloy",
     "stack.runtime.yaml"
   ],
