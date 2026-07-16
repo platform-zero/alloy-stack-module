@@ -14,6 +14,6 @@ loki.source.journal "containers" {
 
 loki.write "local" {
   endpoint {
-    url = "http://loki:3100/loki/api/v1/push"
+    url = "http://127.0.0.1:13100/loki/api/v1/push"
   }
 }

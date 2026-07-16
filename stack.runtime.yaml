@@ -9,6 +9,7 @@ services:
     lifecycle: "daemon"
     updatePolicy: "pinned"
     placement: "rootful"
+    hostNetwork: true
     dependencies:
       loki: "started"
     networks:
