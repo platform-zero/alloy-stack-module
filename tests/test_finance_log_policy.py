@@ -7,11 +7,16 @@ assert 'relabel_rules = loki.relabel.human_finance_private.rules' in text
 for label in ['__journal_container_name','__journal__systemd_user_unit','__journal__systemd_unit']:
  assert 'source_labels = ["'+label+'"]' in text
 assert text.count('action        = "drop"')==3
-for name in ['firefly','firefly-identity-check','firefly-sso','firefly-native-api','firefly-cron','firefly-importer','firefly-importer-sso']:
- assert re.fullmatch('.*firefly.*',name)
+patterns=re.findall(r'regex\s*=\s*"([^"]+)"',text)
+assert len(patterns)==3 and len(set(patterns))==1
+for pattern in patterns:
+ for name in ['firefly','firefly-identity-check','firefly-sso','firefly-native-api','firefly-cron','firefly-importer','firefly-importer-sso','postgres','p0test-r1-postgres','p0test-r1-postgres.service','p0test-r1-postgres.container']:
+  assert re.fullmatch(pattern,name),name
+ for name in ['postgres-ssd','p0test-r1-postgres-ssd.service','postgres-exporter','p0test-r1-postgres-exporter.service','notpostgres','keycloak','p0test-r1-test-runner.service']:
+  assert not re.fullmatch(pattern,name),name
 assert 'forward_to = [loki.process.human_finance_private.receiver]' in text
 assert 'expression = "(?i)firefly"' in text
 for message in ['PUBLIC host=firefly.source.invalid URI_MARKER','PUBLIC from=<firefly@example.invalid>','PUBLIC FIREfly-importer.source.invalid']:
  assert re.search('(?i)firefly',message)
 assert not re.search('(?i)firefly','PUBLIC unrelated keycloak health metadata')
-print('SOURCE ONLY: private financial journal-label and shared-host marker filter assertions passed; native/installed data-flow proof separate')
+print('SOURCE ONLY: private finance/main-DB label and shared-host marker assertions passed; unrelated SSD/exporter labels retained; native/installed data-flow proof separate')

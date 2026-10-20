@@ -3,23 +3,26 @@ logging {
   format = "logfmt"
 }
 
-// Financial service logs stay in the protected local journal, not the general
-// agent-queryable log store. Internal journal labels must be filtered at source.
+// Financial logs stay in the owner-controlled local journal, never general Loki.
+// Shared main PostgreSQL errors can contain rejected financial values WITHOUT
+// the database name. Keep its ENTIRE journal private, not just marked messages.
+// Database liveness/aggregate metrics remain separate; SSD/exporter logs are not
+// silently removed. Internal labels must be filtered before they are discarded.
 loki.relabel "human_finance_private" {
   forward_to = []
   rule {
     source_labels = ["__journal_container_name"]
-    regex         = ".*firefly.*"
+    regex         = ".*firefly.*|(^|.*[-_/])postgres([.]service|[.]container)?$"
     action        = "drop"
   }
   rule {
     source_labels = ["__journal__systemd_user_unit"]
-    regex         = ".*firefly.*"
+    regex         = ".*firefly.*|(^|.*[-_/])postgres([.]service|[.]container)?$"
     action        = "drop"
   }
   rule {
     source_labels = ["__journal__systemd_unit"]
-    regex         = ".*firefly.*"
+    regex         = ".*firefly.*|(^|.*[-_/])postgres([.]service|[.]container)?$"
     action        = "drop"
   }
 }
